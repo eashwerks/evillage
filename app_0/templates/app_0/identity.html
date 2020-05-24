@@ -3,13 +3,11 @@
 <section class="mbr-section form1 cid-rZEti34JiZ" id="form1-9">
 
 
-
-
     <div class="container">
         <div class="row justify-content-center">
             <div class="title col-12 col-lg-8">
                 <h2 class="mbr-section-title align-center pb-3 mbr-fonts-style display-2">
-                  Identity Card Application
+                    Identity Card Application
                 </h2>
                 <h3 class="mbr-section-subtitle align-center mbr-light pb-3 mbr-fonts-style display-5">
                     Please fill all fields
@@ -21,7 +19,9 @@
         <div class="row justify-content-center">
             <div class="media-container-column col-lg-8">
                 <!---Formbuilder Form--->
-                <form action="" method="POST" class="mbr-form form-with-styler">
+                <form method="post" enctype="multipart/form-data" class="mbr-form form-with-styler">
+
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
                             <label>Personal Info:</label>
@@ -29,15 +29,20 @@
                         </div>
                         <div class="col-md-4  form-group" data-for="name">
                             <label for="name-form1-9" class="form-control-label mbr-fonts-style display-7">Name</label>
-                            <input type="text" name="name" data-form-field="Name" required="required" class="form-control display-7" id="name-form1-9">
+                            <input type="text" name="name" data-form-field="Name" required="required"
+                                   class="form-control display-7" id="name-form1-9">
                         </div>
                         <div class="col-md-4  form-group" data-for="email">
-                            <label for="email-form1-9" class="form-control-label mbr-fonts-style display-7">Email</label>
-                            <input type="email" name="email" data-form-field="Email" required="required" class="form-control display-7" id="email-form1-9">
+                            <label for="email-form1-9"
+                                   class="form-control-label mbr-fonts-style display-7">Email</label>
+                            <input type="email" name="email" data-form-field="Email" required="required"
+                                   class="form-control display-7" id="email-form1-9">
                         </div>
                         <div data-for="phone" class="col-md-4  form-group">
-                            <label for="phone-form1-9" class="form-control-label mbr-fonts-style display-7">Phone</label>
-                            <input type="tel" name="phone" data-form-field="Phone" class="form-control display-7" id="phone-form1-9">
+                            <label for="phone-form1-9"
+                                   class="form-control-label mbr-fonts-style display-7">Phone</label>
+                            <input type="tel" name="phone" data-form-field="Phone" class="form-control display-7"
+                                   id="phone-form1-9">
                         </div>
                         <div class="col-md-12">
                             <label>Additional Details:</label>
@@ -45,60 +50,73 @@
                         </div>
                         <div class="col-md-4 form-group" data-for="pmc">
                             <label for="pmc">Date of birth</label>
-                            <input type="date" name="" data-form-field="pmc" class="form-control display-7" id="pmc" >
+                            <input type="date" name="dob" data-form-field="pmc" class="form-control display-7" id="pmc">
                         </div>
                         <div class="col-md-4 form-group" data-for="taluk">
                             <label for="taluk">Place of birth</label>
-                            <input type="text" name="" data-form-field="taluk" class="form-control display-7" id="taluk" >
+                            <input type="text" name="pob" data-form-field="taluk" class="form-control display-7"
+                                   id="taluk">
                         </div>
                         <div class="col-md-4 form-group" data-for="adhar">
                             <label for="adhar">Adhar Number</label>
-                            <input type="text" name="" data-form-field="adhar" class="form-control display-7" id="adhar" >
+                            <input type="text" name="uid" data-form-field="adhar" class="form-control display-7"
+                                   id="adhar">
                         </div>
                         <div data-for="message" class="col-md-4 form-group">
-                            <label for="message-form1-9" class="form-control-label mbr-fonts-style display-7">Address</label>
-                            <input type="text" name="message" data-form-field="Message" class="form-control display-7" id="message-form1-9">
+                            <label for="message-form1-9"
+                                   class="form-control-label mbr-fonts-style display-7">Address</label>
+                            <input type="text" name="address" data-form-field="Message" class="form-control display-7"
+                                   id="message-form1-9">
                         </div>
                         <div class="col-md-4 form-group" data-for="hname">
                             <label for="hname">Designation</label>
-                            <input type="text" name="" data-form-field="hname" class="form-control display-7" id="hname" >
+                            <input type="text" name="designation" data-form-field="hname" class="form-control display-7"
+                                   id="hname">
                         </div>
                         <div class="col-md-4 form-group" data-for="ward">
                             <label for="ward">Father Name</label>
-                            <input type="text" name="" data-form-field="ward" class="form-control display-7" id="ward" >
+                            <input type="text" name="father" data-form-field="ward" class="form-control display-7"
+                                   id="ward">
                         </div>
                         <div class="col-md-4 form-group" data-for="c-name">
                             <label for="c-name">Mother Name</label>
-                            <input type="text" name="" data-form-field="c-name" class="form-control display-7" id="c-name" >
+                            <input type="text" name="mother" data-form-field="c-name" class="form-control display-7"
+                                   id="c-name">
                         </div>
                         <div class="col-md-4 form-group" data-for="pic">
                             <label for="pic">Photo</label>
-                            <input type="file" name="" data-form-field="pic" class="form-control display-7" id="hnpicame" >
+                            <input type="file" name="photo" data-form-field="pic" class="form-control display-7"
+                                   id="hnpicame">
                         </div>
                         <div class="col-md-4 form-group" data-for="proof">
                             <label for="proof">Proof Documents</label>
-                            <input type="file" multiple name="" data-form-field="proof" class="form-control display-7" id="proof" >
+                            <input type="file" name="proof" data-form-field="proof" class="form-control display-7"
+                                   id="proof">
                         </div>
                         <div class="col-md-12">
                             <label>Guarantier Details:</label>
                             <hr>
                         </div>
-                         <!--Member-->
-                         <div class="col-md-3 form-group" data-for="u1name">
+                        <!--Member-->
+                        <div class="col-md-3 form-group" data-for="u1name">
                             <label for="u1name">Name</label>
-                            <input type="text" name="" data-form-field="u1name" class="form-control display-7" id="u1name" >
+                            <input type="text" name="g_name" data-form-field="u1name" class="form-control display-7"
+                                   id="u1name">
                         </div>
                         <div class="col-md-3 form-group" data-for="u1dob">
                             <label for="u1dob">Relation</label>
-                            <input type="text" name="" data-form-field="u1dob" class="form-control display-7" id="u1dob" >
+                            <input type="text" name="g_relation" data-form-field="u1dob" class="form-control display-7"
+                                   id="u1dob">
                         </div>
                         <div class="col-md-3 form-group" data-for="u1income">
                             <label for="u1income">Adhar Number</label>
-                            <input type="text" name="" data-form-field="u1income" class="form-control display-7" id="u1income" >
+                            <input type="text" name="g_uid" data-form-field="u1income" class="form-control display-7"
+                                   id="u1income">
                         </div>
                         <div class="col-md-3 form-group" data-for="u1adhar">
                             <label for="u1adhar">Photo</label>
-                            <input type="file" name="" data-form-field="u1adhar" class="form-control display-7" id="u1adhar" >
+                            <input type="file" name="g_photo" data-form-field="u1adhar" class="form-control display-7"
+                                   id="u1adhar">
                         </div>
                         <div class="col-md-12 input-group-btn align-center">
                             <button type="submit" class="btn btn-primary display-4">Apply</button>

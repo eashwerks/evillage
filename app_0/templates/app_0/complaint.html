@@ -19,7 +19,8 @@
         <div class="row justify-content-center">
             <div class="media-container-column col-lg-8">
                 <!---Formbuilder Form--->
-                <form action="" method="POST" class="mbr-form form-with-styler">
+                <form method="post" enctype="multipart/form-data" class="mbr-form form-with-styler">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-md-12">
                             <label>Personal Info:</label>
@@ -48,11 +49,11 @@
                         </div>
                         <div class="col-md-6 form-group" data-for="pmc">
                             <label for="pmc">Title</label>
-                            <input type="text" name="" data-form-field="pmc" class="form-control display-7" id="pmc">
+                            <input type="text" name="title" data-form-field="pmc" class="form-control display-7" id="pmc">
                         </div>
                         <div class="col-md-6 form-group" data-for="taluk">
                             <label for="taluk">Service</label>
-                            <input type="text" name="" data-form-field="taluk" class="form-control display-7"
+                            <input type="text" name="service" data-form-field="taluk" class="form-control display-7"
                                    id="taluk">
                         </div>
                         <div data-for="message" class="col-md-12 form-group">

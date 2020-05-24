@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
+
     'app_0',
 ]
 
@@ -127,6 +129,8 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-# AUTH_USER_MODEL = 'app_0.AuthUser'
+AUTH_USER_MODEL = 'app_0.VillageOfficer'
 
 LOGIN_URL = '/secure/login'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
