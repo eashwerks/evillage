@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -360,5 +361,6 @@ def detail_approval(request, status, pk):
                                  'Successfully {} application {}'.format(type.lower(), item.number))
             return redirect(start)
         except Exception as err:
-            messages.add_message(request, messages.ERROR, err)
+            # messages.add_message(request, messages.ERROR, err)
+            raise err
         return redirect(start)

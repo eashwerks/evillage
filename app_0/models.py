@@ -10,6 +10,7 @@ from django.template import loader
 from model_utils import Choices
 from model_utils.fields import StatusField
 
+from app_0.certificate_gen import render_to_pdf
 from app_0.email import thread_mail
 
 
@@ -156,10 +157,6 @@ class TaxService(AbstractModel):
     def __str__(self):
         return self.number
 
-    def save(self, **kwargs):
-        print('vannu')
-        return super(TaxService, self).save(**kwargs)
-
 
 class ComplaintService(AbstractModel):
     number = models.CharField(max_length=20)
@@ -249,15 +246,16 @@ def my_handler3(sender, instance, **kwargs):
         body = ''
         form_email = settings.EMAIL_HOST_USER
         to_email = instance.requested_by.email
+        attachment = render_to_pdf(instance, 'admin/certificate.html')
         html = loader.render_to_string(
             'email/email.html',
             {
                 'title': subject,
-                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
-                                                                                                   instance.number)
+                'content': "Your {} number {} is approved. The certificate is attached".format(instance.type,
+                                                                                               instance.number)
             }
         )
-        thread_mail(subject, body, form_email, [to_email], False, html)
+        thread_mail(subject, body, form_email, [to_email], False, html, attachment)
 
 
 @receiver(post_save, sender=CastService)
@@ -280,15 +278,16 @@ def my_handler4(sender, instance, **kwargs):
         body = ''
         form_email = settings.EMAIL_HOST_USER
         to_email = instance.requested_by.email
+        attachment = render_to_pdf(instance, 'admin/certificate.html')
         html = loader.render_to_string(
             'email/email.html',
             {
                 'title': subject,
-                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
-                                                                                                   instance.number)
+                'content': "Your {} number {} is approved. The certificate is attached".format(instance.type,
+                                                                                               instance.number)
             }
         )
-        thread_mail(subject, body, form_email, [to_email], False, html)
+        thread_mail(subject, body, form_email, [to_email], False, html, attachment)
 
 
 @receiver(post_save, sender=IdentityService)
@@ -342,12 +341,13 @@ def my_handler6(sender, instance, **kwargs):
         body = ''
         form_email = settings.EMAIL_HOST_USER
         to_email = instance.requested_by.email
+        attachment = render_to_pdf(instance, 'admin/certificate.html')
         html = loader.render_to_string(
             'email/email.html',
             {
                 'title': subject,
-                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
-                                                                                                   instance.number)
+                'content': "Your {} number {} is approved. The certificate is attached".format(instance.type,
+                                                                                               instance.number)
             }
         )
-        thread_mail(subject, body, form_email, [to_email], False, html)
+        thread_mail(subject, body, form_email, [to_email], False, html, attachment)
