@@ -335,13 +335,11 @@ def detail_approval(request, status, pk):
         return redirect(start)
     if request.method == 'POST':
         type = request.POST.get('type', None)
-        print(request.POST)
         try:
             if status == 'Ration card':
                 item = RationCardService.objects.get(pk=pk)
                 item.status = type
                 item.save()
-                return render(request, 'app_0/ration_card.html', context)
             if status == 'Nativity':
                 item = NativityService.objects.get(pk=pk)
                 item.status = type
@@ -357,10 +355,10 @@ def detail_approval(request, status, pk):
             if status == 'Identity card':
                 item = IdentityService.objects.get(pk=pk)
                 item.status = type
-                print(item.status)
                 item.save()
             messages.add_message(request, messages.SUCCESS,
                                  'Successfully {} application {}'.format(type.lower(), item.number))
+            return redirect(start)
         except Exception as err:
             messages.add_message(request, messages.ERROR, err)
         return redirect(start)

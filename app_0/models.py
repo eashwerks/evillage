@@ -1,10 +1,16 @@
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template import loader
 
 from model_utils import Choices
 from model_utils.fields import StatusField
+
+from app_0.email import thread_mail
 
 
 class VillageOfficer(AbstractBaseUser, PermissionsMixin):
@@ -150,6 +156,10 @@ class TaxService(AbstractModel):
     def __str__(self):
         return self.number
 
+    def save(self, **kwargs):
+        print('vannu')
+        return super(TaxService, self).save(**kwargs)
+
 
 class ComplaintService(AbstractModel):
     number = models.CharField(max_length=20)
@@ -168,3 +178,176 @@ class NotificationService(models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(post_save, sender=TaxService)
+def my_handler1(sender, instance, **kwargs):
+    if instance.status == 'PENDING':
+        subject = '{} {} Paid.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': "Payment Success.",
+                'content': " Your tax payment of {} successfully registered with number {}".format(instance.tax_amount,
+                                                                                                   instance.tax_number)
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+
+
+@receiver(post_save, sender=RationCardService)
+def my_handler2(sender, instance, **kwargs):
+    if instance.status == 'PENDING':
+        subject = '{} {} Requested.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Request registered and wait for approval"
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+    if instance.status == 'APPROVED':
+        subject = '{} with number {} APPROVED.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
+                                                                                                   instance.number)
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+
+
+@receiver(post_save, sender=IncomeService)
+def my_handler3(sender, instance, **kwargs):
+    if instance.status == 'PENDING':
+        subject = '{} {} Requested.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Request registered and wait for approval"
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+    if instance.status == 'APPROVED':
+        subject = '{} with number {} APPROVED.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
+                                                                                                   instance.number)
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+
+
+@receiver(post_save, sender=CastService)
+def my_handler4(sender, instance, **kwargs):
+    if instance.status == 'PENDING':
+        subject = '{} {} Requested.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Request registered and wait for approval"
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+    if instance.status == 'APPROVED':
+        subject = '{} with number {} APPROVED.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
+                                                                                                   instance.number)
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+
+
+@receiver(post_save, sender=IdentityService)
+def my_handler5(sender, instance, **kwargs):
+    if instance.status == 'PENDING':
+        subject = '{} {} Requested.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Request registered and wait for approval"
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+    if instance.status == 'APPROVED':
+        subject = '{} with number {} APPROVED.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
+                                                                                                   instance.number)
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+
+
+@receiver(post_save, sender=NativityService)
+def my_handler6(sender, instance, **kwargs):
+    if instance.status == 'PENDING':
+        subject = '{} {} Requested.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Request registered and wait for approval"
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
+    if instance.status == 'APPROVED':
+        subject = '{} with number {} APPROVED.'.format(instance.type, instance.number)
+        body = ''
+        form_email = settings.EMAIL_HOST_USER
+        to_email = instance.requested_by.email
+        html = loader.render_to_string(
+            'email/email.html',
+            {
+                'title': subject,
+                'content': "Your {} number {} is approved. It will be sent to your address".format(instance.type,
+                                                                                                   instance.number)
+            }
+        )
+        thread_mail(subject, body, form_email, [to_email], False, html)
