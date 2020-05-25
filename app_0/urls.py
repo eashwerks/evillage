@@ -27,7 +27,8 @@ urlpatterns = [
     path('request/cast', views.req_cast_view, name='caste'),
     path('request/payTax', views.req_tax_view, name='pay_tax'),
     path('request/complaint', views.req_complaint_view, name='complaint'),
-    path('login/', views.login, name='login'),
+    path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/<str:status>/<int:pk>/', views.detail_approval, name='dashboard-detail'),
 ]

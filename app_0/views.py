@@ -2,6 +2,7 @@ import random
 from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -107,7 +108,7 @@ def req_income_view(request):
         address = request.POST.get('address', None)
         annual_income = request.POST.get('annual_income', None)
         photo = request.FILES.get('photo', None)
-        document = request.FILES.get('proof', None)
+        document = request.FILES.get('document', None)
         try:
             number = timezone.now().strftime("%Y%m%d") + 'IN' + str(random.randint(1, 100))
             user, created = RequestUser.objects.get_or_create(name=name, email=email, phone=phone)
@@ -178,7 +179,7 @@ def req_cast_view(request):
         address = request.POST.get('address', None)
         cast = request.POST.get('cast', None)
         photo = request.FILES.get('photo', None)
-        document = request.FILES.get('proof', None)
+        document = request.FILES.get('document', None)
         try:
             number = timezone.now().strftime("%Y%m%d") + 'CA' + str(random.randint(1, 100))
             user, created = RequestUser.objects.get_or_create(name=name, email=email, phone=phone)
@@ -244,6 +245,8 @@ def req_complaint_view(request):
 
 
 def start(request):
+    if request.user.is_authenticated:
+        return redirect(dashboard)
     return redirect(index_view)
 
 
@@ -278,7 +281,86 @@ def logout_view(request):
     return redirect(start)
 
 
+@login_required
 def dashboard(request):
     context = {}
     template_name = 'admin/dashboard.html'
-    return render(request, template_name, context)
+    value_field = ('id', 'type', 'requested_by__name', 'requested_on')
+    rc = RationCardService.objects.filter(status='PENDING').values(*value_field)
+    na = NativityService.objects.filter(status='PENDING').values(*value_field)
+    inc = IncomeService.objects.filter(status='PENDING').values(*value_field)
+    ca = CastService.objects.filter(status='PENDING').values(*value_field)
+    idc = IdentityService.objects.filter(status='PENDING').values(*value_field)
+
+    if request.method == 'GET':
+        list_data = list(rc) + list(na) + list(inc) + list(ca) + list(idc)
+        context['items'] = sorted(list_data, key=lambda i: i['requested_on'], reverse=True)
+        return render(request, template_name, context)
+    if request.method == 'POST':
+        list_data = list(rc) + list(na) + list(inc) + list(ca) + list(idc)
+        type_filter = request.POST.get('type', None)
+        if type_filter:
+            if type_filter == 'Ration card':
+                list_data = list(rc)
+            if type_filter == 'Nativity':
+                list_data = list(na)
+            if type_filter == 'Income':
+                list_data = list(inc)
+            if type_filter == 'Identity card':
+                list_data = list(idc)
+            if type_filter == 'Caste':
+                list_data = list(ca)
+            context['items'] = sorted(list_data, key=lambda i: i['requested_on'], reverse=True)
+            return render(request, template_name, context)
+
+
+def detail_approval(request, status, pk):
+    context = {}
+    if request.method == 'GET':
+        if status == 'Ration card':
+            context['item'] = RationCardService.objects.get(pk=pk)
+            return render(request, 'app_0/ration_card.html', context)
+        if status == 'Nativity':
+            context['item'] = NativityService.objects.get(pk=pk)
+            return render(request, 'app_0/nativity.html', context)
+        if status == 'Income':
+            context['item'] = IncomeService.objects.get(pk=pk)
+            return render(request, 'app_0/income.html', context)
+        if status == 'Caste':
+            context['item'] = CastService.objects.get(pk=pk)
+            return render(request, 'app_0/cast.html', context)
+        if status == 'Identity card':
+            context['item'] = IdentityService.objects.get(pk=pk)
+            return render(request, 'app_0/identity.html', context)
+        return redirect(start)
+    if request.method == 'POST':
+        type = request.POST.get('type', None)
+        print(request.POST)
+        try:
+            if status == 'Ration card':
+                item = RationCardService.objects.get(pk=pk)
+                item.status = type
+                item.save()
+                return render(request, 'app_0/ration_card.html', context)
+            if status == 'Nativity':
+                item = NativityService.objects.get(pk=pk)
+                item.status = type
+                item.save()
+            if status == 'Income':
+                item = IncomeService.objects.get(pk=pk)
+                item.status = type
+                item.save()
+            if status == 'Caste':
+                item = CastService.objects.get(pk=pk)
+                item.status = type
+                item.save()
+            if status == 'Identity card':
+                item = IdentityService.objects.get(pk=pk)
+                item.status = type
+                print(item.status)
+                item.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 'Successfully {} application {}'.format(type.lower(), item.number))
+        except Exception as err:
+            messages.add_message(request, messages.ERROR, err)
+        return redirect(start)

@@ -48,6 +48,7 @@ class AbstractModel(models.Model):
 
 
 class RationCardService(AbstractModel):
+    type = models.CharField(max_length=120, default='Ration card')
     number = models.CharField(max_length=20)
     panchayath = models.CharField(max_length=120)
     taluk = models.CharField(max_length=120)
@@ -65,6 +66,7 @@ class RationCardService(AbstractModel):
 
 
 class NativityService(AbstractModel):
+    type = models.CharField(max_length=120, default='Nativity')
     number = models.CharField(max_length=20)
     dob = models.DateField()
     pob = models.CharField(max_length=12)
@@ -85,6 +87,7 @@ class NativityService(AbstractModel):
 
 
 class IncomeService(AbstractModel):
+    type = models.CharField(max_length=120, default='Income')
     number = models.CharField(max_length=20)
     dob = models.DateField()
     pob = models.CharField(max_length=12)
@@ -101,6 +104,7 @@ class IncomeService(AbstractModel):
 
 
 class IdentityService(AbstractModel):
+    type = models.CharField(max_length=120, default='Identity card')
     number = models.CharField(max_length=20)
     dob = models.DateField()
     pob = models.CharField(max_length=12)
@@ -121,6 +125,7 @@ class IdentityService(AbstractModel):
 
 
 class CastService(AbstractModel):
+    type = models.CharField(max_length=120, default='Caste')
     number = models.CharField(max_length=20)
     dob = models.DateField()
     pob = models.CharField(max_length=12)
@@ -137,6 +142,7 @@ class CastService(AbstractModel):
 
 
 class TaxService(AbstractModel):
+    type = models.CharField(max_length=120, default='Tax')
     number = models.CharField(max_length=20)
     tax_number = models.CharField(max_length=120)
     tax_amount = models.DecimalField(max_digits=10, decimal_places=2)

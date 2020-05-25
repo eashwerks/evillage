@@ -3,94 +3,89 @@
 <section class="section-table cid-rZEtpe95nB" id="table1-a">
 
 
-
-        <div class="container container-table">
-            <h2 class="mbr-section-title mbr-fonts-style align-center pb-3 display-2">
-                Pending Applications
-            </h2>
-            <!-- <h3 class="mbr-section-subtitle mbr-fonts-style align-center pb-5 mbr-light display-5">
-                sd
-            </h3> -->
-            <div class="form-group row">
-                <div class="col-md-8">
-                    <label for="type">Select Certificate Type</label>
-                    <select name="" id="type" class="form-control">
-                        <option>Income</option>
-                        <option>Caste</option>
-                        <option>Identity</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <input type="submit" value="Search" class="btn btn-primary">
-                </div>
+    <div class="container container-table">
+        <h2 class="mbr-section-title mbr-fonts-style align-center pb-3 display-2">
+            Pending Applications
+        </h2>
+        <!-- <h3 class="mbr-section-subtitle mbr-fonts-style align-center pb-5 mbr-light display-5">
+            sd
+        </h3> -->
+        <form method="post" class="form-group row">
+            {% csrf_token %}
+            <div class="col-md-8">
+                <label for="type">Select Certificate Type</label>
+                <select name="type" id="type" class="form-control">
+                    <option value="Income">Income</option>
+                    <option value="Caste">Caste</option>
+                    <option value="Identity card">Identity card</option>
+                    <option value="Nativity">Nativity</option>
+                    <option value="Ration Card">Ration Card</option>
+                </select>
             </div>
-            <div class="table-wrapper">
-              <div class="container">
+            <div class="col-md-4">
+                <input type="submit" value="Search" class="btn btn-primary">
+            </div>
+        </form>
+        <div class="table-wrapper">
+            <div class="container">
                 <div class="row search">
-                  <div class="col-md-6"></div>
-                  <div class="col-md-6">
-                      <div class="dataTables_filter">
-                        <label class="searchInfo mbr-fonts-style display-7">Search:</label>
-                        <input class="form-control input-sm" disabled="">
-                      </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="container scroll">
-                <table class="table isSearch" cellspacing="0">
-                  <thead>
-                    <tr class="table-heads ">
-                    <th class="head-item mbr-fonts-style display-7">
-                            Number</th><th class="head-item mbr-fonts-style display-7">
-                            Name</th><th class="head-item mbr-fonts-style display-7">
-                            Type</th><th class="head-item mbr-fonts-style display-7">
-                            Action</th></tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td class="body-item mbr-fonts-style display-7">1</td>
-                    <td class="body-item mbr-fonts-style display-7">Jeanna Schmal</td>
-                    <td class="body-item mbr-fonts-style display-7">Income</td>
-                    <td class="body-item mbr-fonts-style display-7"><a href="village-action.html">View</a></td>
-                </tr>
-                <tr>
-                    <td class="body-item mbr-fonts-style display-7">2</td>
-                    <td class="body-item mbr-fonts-style display-7">Jeanna Schmal</td>
-                    <td class="body-item mbr-fonts-style display-7">Nativity</td>
-                    <td class="body-item mbr-fonts-style display-7"><a href="village-action.html">View</a></td>
-                </tr>
-                <tr>
-                    <td class="body-item mbr-fonts-style display-7">3</td>
-                    <td class="body-item mbr-fonts-style display-7">Jeanna Schmal</td>
-                    <td class="body-item mbr-fonts-style display-7">Caste</td>
-                    <td class="body-item mbr-fonts-style display-7"><a href="village-action.html">View</a></td>
-                </tr>
-                <tr>
-                    <td class="body-item mbr-fonts-style display-7">4</td>
-                    <td class="body-item mbr-fonts-style display-7">Jeanna Schmal</td>
-                    <td class="body-item mbr-fonts-style display-7">Identity</td>
-                    <td class="body-item mbr-fonts-style display-7"><a href="village-action.html">View</a></td>
-                </tr>
-            </tbody>
-                </table>
-              </div>
-              <div class="container table-info-container">
-                <div class="row info">
-                  <div class="col-md-6">
-                    <div class="dataTables_info mbr-fonts-style display-7">
-                      <span class="infoBefore">Showing</span>
-                      <span class="inactive infoRows"></span>
-                      <span class="infoAfter">entries</span>
-                      <span class="infoFilteredBefore">(filtered from</span>
-                      <span class="inactive infoRows"></span>
-                      <span class="infoFilteredAfter"> total entries)</span>
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <div class="dataTables_filter">
+                            <label class="searchInfo mbr-fonts-style display-7">Search:</label>
+                            <input class="form-control input-sm" disabled="">
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-md-6"></div>
                 </div>
-              </div>
             </div>
-          </div>
-      </section>
+
+            <div class="container scroll">
+                <table class="table isSearch" cellspacing="0">
+                    <thead>
+                    <tr class="table-heads ">
+                        <th class="head-item mbr-fonts-style display-7">
+                            Number
+                        </th>
+                        <th class="head-item mbr-fonts-style display-7">
+                            Name
+                        </th>
+                        <th class="head-item mbr-fonts-style display-7">
+                            Type
+                        </th>
+                        <th class="head-item mbr-fonts-style display-7">
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="body-item mbr-fonts-style display-7">{{ forloop.counter }}</td>
+                        <td class="body-item mbr-fonts-style display-7">{{ item.requested_by__name }}</td>
+                        <td class="body-item mbr-fonts-style display-7">{{ item.type }}</td>
+                        <td class="body-item mbr-fonts-style display-7"><a href="{% url 'dashboard-detail' item.type item.id%}">View</a></td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="container table-info-container">
+                <div class="row info">
+                    <div class="col-md-6">
+                        <div class="dataTables_info mbr-fonts-style display-7">
+                            <span class="infoBefore">Showing</span>
+                            <span class="inactive infoRows"></span>
+                            <span class="infoAfter">entries</span>
+                            <span class="infoFilteredBefore">(filtered from</span>
+                            <span class="inactive infoRows"></span>
+                            <span class="infoFilteredAfter"> total entries)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

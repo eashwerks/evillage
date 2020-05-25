@@ -30,19 +30,21 @@
                         <div class="col-md-4  form-group" data-for="name">
                             <label for="name-form1-9" class="form-control-label mbr-fonts-style display-7">Name</label>
                             <input type="text" name="name" data-form-field="Name" required="required"
-                                   class="form-control display-7" id="name-form1-9">
+                                   class="form-control display-7" id="name-form1-9"
+                                   value="{{ item.requested_by.name }}">
                         </div>
                         <div class="col-md-4  form-group" data-for="email">
                             <label for="email-form1-9"
                                    class="form-control-label mbr-fonts-style display-7">Email</label>
                             <input type="email" name="email" data-form-field="Email" required="required"
-                                   class="form-control display-7" id="email-form1-9">
+                                   class="form-control display-7" id="email-form1-9"
+                                   value="{{ item.requested_by.email }}">
                         </div>
                         <div data-for="phone" class="col-md-4  form-group">
                             <label for="phone-form1-9"
                                    class="form-control-label mbr-fonts-style display-7">Phone</label>
                             <input type="tel" name="phone" data-form-field="Phone" class="form-control display-7"
-                                   id="phone-form1-9">
+                                   id="phone-form1-9" value="{{ item.requested_by.phone }}">
                         </div>
                         <div class="col-md-12">
                             <label>Additional Details:</label>
@@ -50,49 +52,67 @@
                         </div>
                         <div class="col-md-4 form-group" data-for="pmc">
                             <label for="pmc">Date of birth</label>
-                            <input type="date" name="dob" data-form-field="pmc" class="form-control display-7" id="pmc">
+                            <input type="date" name="dob" data-form-field="pmc" class="form-control display-7" id="pmc"
+                                   value="{{ item.dob }}">
                         </div>
                         <div class="col-md-4 form-group" data-for="taluk">
                             <label for="taluk">Place of birth</label>
                             <input type="text" name="pob" data-form-field="taluk" class="form-control display-7"
-                                   id="taluk">
+                                   id="taluk" value="{{ item.pob }}">
                         </div>
                         <div class="col-md-4 form-group" data-for="adhar">
                             <label for="adhar">Adhar Number</label>
                             <input type="text" name="uid" data-form-field="adhar" class="form-control display-7"
-                                   id="adhar">
+                                   id="adhar" value="{{ item.uid }}">
                         </div>
                         <div data-for="message" class="col-md-4 form-group">
                             <label for="message-form1-9"
                                    class="form-control-label mbr-fonts-style display-7">Address</label>
                             <input type="text" name="address" data-form-field="Message" class="form-control display-7"
-                                   id="message-form1-9">
+                                   id="message-form1-9" value="{{ item.address }}">
                         </div>
                         <div class="col-md-4 form-group" data-for="hname">
                             <label for="hname">Designation</label>
                             <input type="text" name="designation" data-form-field="hname" class="form-control display-7"
-                                   id="hname">
+                                   id="hname" value="{{ item.designation }}">
                         </div>
                         <div class="col-md-4 form-group" data-for="ward">
                             <label for="ward">Father Name</label>
                             <input type="text" name="father" data-form-field="ward" class="form-control display-7"
-                                   id="ward">
+                                   id="ward" value="{{ item.father }}">
                         </div>
                         <div class="col-md-4 form-group" data-for="c-name">
                             <label for="c-name">Mother Name</label>
                             <input type="text" name="mother" data-form-field="c-name" class="form-control display-7"
-                                   id="c-name">
+                                   id="c-name" value="{{ item.mother }}">
                         </div>
+                        {% if item %}
+                        <div class="col-md-4 form-group" data-for="pic">
+                            <label for="pic"></label>
+                            <a href="{{ item.photo.url }}"><input type="button" name="photo" data-form-field="pic"
+                                                                  class="btn btn-primary form-control display-7"
+                                                                  id="pic" value="View Photo"></a>
+                        </div>
+                        <div class="col-md-4 form-group" data-for="proof">
+                            <label for="proof"></label>
+                            <a href="{{ item.document.url }}"><input type="button" name="proof" data-form-field="proof"
+                                                                     class="btn btn-primary form-control display-7"
+                                                                     id="proof" value="View Doc"></a>
+                        </div>
+                        {% else %}
+
                         <div class="col-md-4 form-group" data-for="pic">
                             <label for="pic">Photo</label>
                             <input type="file" name="photo" data-form-field="pic" class="form-control display-7"
-                                   id="hnpicame">
+                                   id="pic">
                         </div>
                         <div class="col-md-4 form-group" data-for="proof">
                             <label for="proof">Proof Documents</label>
-                            <input type="file" name="proof" data-form-field="proof" class="form-control display-7"
+                            <input type="file" name="proof" data-form-field="proof"
+                                   class="form-control display-7"
                                    id="proof">
                         </div>
+                        {% endif %}
                         <div class="col-md-12">
                             <label>Guarantier Details:</label>
                             <hr>
@@ -101,26 +121,51 @@
                         <div class="col-md-3 form-group" data-for="u1name">
                             <label for="u1name">Name</label>
                             <input type="text" name="g_name" data-form-field="u1name" class="form-control display-7"
-                                   id="u1name">
+                                   id="u1name" value="{{ item.g_name }}">
                         </div>
                         <div class="col-md-3 form-group" data-for="u1dob">
                             <label for="u1dob">Relation</label>
                             <input type="text" name="g_relation" data-form-field="u1dob" class="form-control display-7"
-                                   id="u1dob">
+                                   id="u1dob" value="{{ item.g_relation }}">
                         </div>
                         <div class="col-md-3 form-group" data-for="u1income">
                             <label for="u1income">Adhar Number</label>
                             <input type="text" name="g_uid" data-form-field="u1income" class="form-control display-7"
-                                   id="u1income">
+                                   id="u1income" value="{{ item.g_uid }}">
                         </div>
+                        {% if item %}
+                        <div class="col-md-4 form-group" data-for="pic">
+                            <label for="pic"></label>
+                            <a href="{{ item.g_photo.url }}"><input type="button" name="g_photo" data-form-field="pic"
+                                                                    class="form-control display-7"
+                                                                    id="pic" value="View Photo"></a>
+                        </div>
+
+                        {% else %}
                         <div class="col-md-3 form-group" data-for="u1adhar">
                             <label for="u1adhar">Photo</label>
-                            <input type="file" name="g_photo" data-form-field="u1adhar" class="form-control display-7"
-                                   id="u1adhar">
+                            <input type="file" name="g_photo" data-form-field="u1adhar"
+                                   class="form-control display-7"
+                                   id="u1adhar" value="{{ item.g_photo }}">
                         </div>
+                        {% endif %}
+
+                        {% if user.is_authenticated %}
+                        <form method="post">
+                            <div class="col-md-12 input-group-btn align-center">
+                                <button type="submit" name="type"   class="btn btn-info display-4" value="REJECTED">
+                                    Reject
+                                </button>
+                                <button type="submit" name="type" class="btn btn-primary display-4" value="APPROVED">Approve
+                                </button>
+                            </div>
+                        </form>
+
+                        {% else %}
                         <div class="col-md-12 input-group-btn align-center">
                             <button type="submit" class="btn btn-primary display-4">Apply</button>
                         </div>
+                        {% endif %}
                     </div>
                 </form><!---Formbuilder Form--->
             </div>
