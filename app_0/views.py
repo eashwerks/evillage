@@ -267,8 +267,8 @@ def login_view(request):
 
             else:
                 error_message = 'username and password required'
-        except:
-            error_message = 'Check username and password'
+        except Exception as err:
+            error_message = err
         if error_message:
             messages.add_message(request, messages.ERROR, error_message)
 
