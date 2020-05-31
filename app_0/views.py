@@ -392,3 +392,21 @@ def detail_approval(request, status, pk):
         except Exception as err:
             messages.add_message(request, messages.ERROR, err)
         return redirect(start)
+
+
+@login_required
+def complaint_view(request):
+    context = {}
+    template_name = 'admin/view_complaint.html'
+    if request.method == 'GET':
+        context['items'] = ComplaintService.objects.filter(is_read=False, village=request.user.village)
+        return render(request, template_name, context)
+
+
+@login_required
+def complaint_read(request, pk):
+    if request.method == 'GET':
+        complaint = ComplaintService.objects.get(pk=int(pk))
+        complaint.is_read = True
+        complaint.save()
+        return redirect(complaint_view)

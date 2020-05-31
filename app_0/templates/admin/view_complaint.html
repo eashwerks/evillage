@@ -1,0 +1,45 @@
+{% extends "app_0/base.html" %}
+{% block content %}
+<section class="counters5 counters cid-s0yaISSOSt visible" id="counters5-d">
+    <div class="container pt-4 mt-2">
+        <h2 class="mbr-section-title pb-3 align-center mbr-fonts-style display-2">Pending Complaints</h2>
+        <h3 class="mbr-section-subtitle pb-5 align-center mbr-fonts-style display-5">
+            Check out pending complaints here
+        </h3>
+        <div class="row justify-content-center">
+            <div class="cards-block">
+                {% for item in items %}
+                <div class="cards-container">
+                    <div class="card px-3 align-left col-12">
+                        <div class="panel-item p-4 d-flex">
+                            <div class="card-img pr-3">
+                                <h3 class="img-text d-flex align-items-center justify-content-center">
+                                    1
+                                </h3>
+                            </div>
+                            <div class="card-text">
+                                <h4 class="mbr-content-title mbr-bold mbr-fonts-style display-7">{{item.title}}</h4>
+                                <p class="mbr-content-text mbr-fonts-style display-7">Personal Info</p>
+                                <span class="row">
+                                        <p class="mbr-content-text mbr-fonts-style display-7 col-6">
+                                            {{item.requested_by.name}}<br>
+                                            {{item.requested_by.email}}<br>
+                                            Ph : {{item.requested_by.phone}}
+                                        </p>
+                                        <p class="mbr-content-text mbr-fonts-style display-7 col-6">Service : {{item.service}}</p>
+                                    </span>
+                                <hr>
+                                <p class="mbr-content-text mbr-fonts-style display-7">
+                                    {{item.message}}
+                                </p>
+                                <a href="{% url 'read-complaints' item.id %}" class="btn btn-primary">Mark as read</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

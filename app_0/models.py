@@ -179,6 +179,7 @@ class ComplaintService(AbstractModel):
     number = models.CharField(max_length=20)
     title = models.CharField(max_length=120)
     service = models.CharField(max_length=120)
+    is_read = models.BooleanField(default=False)
     message = models.TextField()
 
     def __str__(self):
