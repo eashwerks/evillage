@@ -56,6 +56,15 @@
                             <input type="text" name="service" data-form-field="taluk" class="form-control display-7"
                                    id="taluk">
                         </div>
+                        <div class="col-md-4 form-group" data-for="village">
+                            <label for="village">Village</label>
+                            <select type="text" name="village" data-form-field="village" class="form-control display-7"
+                                    id="village">
+                                {% for village in villages %}
+                                <option value="{{village.id}}">{{village}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         <div data-for="message" class="col-md-12 form-group">
                             <label for="message-form1-9"
                                    class="form-control-label mbr-fonts-style display-7">Message</label>

@@ -14,6 +14,14 @@ from app_0.certificate_gen import render_to_pdf
 from app_0.email import thread_mail
 
 
+class Village(models.Model):
+    name = models.CharField(max_length=120)
+    address = models.TextField()
+
+    def __str__(self):
+        return '{}-{}'.format(self.name, self.address)
+
+
 class VillageOfficer(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=32, unique=True)
@@ -24,10 +32,18 @@ class VillageOfficer(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'first_name', 'phone_number']
 
+    village = models.ForeignKey(Village, on_delete=models.CASCADE, null=True, blank=True)
+
     objects = UserManager()
 
     def __str__(self):
         return self.username
+
+    def save(self, *args, **kwargs):
+        if not self.is_staff:
+            if not self.village:
+                raise Exception('Village is required.')
+        return super(VillageOfficer, self).save(*args, **kwargs)
 
 
 class RequestUser(models.Model):
@@ -49,6 +65,7 @@ class AbstractModel(models.Model):
     requested_by = models.ForeignKey(RequestUser, on_delete=models.CASCADE)
     requested_on = models.DateField(auto_created=True)
     status = StatusField(choices_name='STATUS', default=STATUS.PENDING)
+    village = models.ForeignKey(Village, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
@@ -210,6 +227,8 @@ def my_handler2(sender, instance, **kwargs):
             }
         )
         thread_mail(subject, body, form_email, [to_email], False, html)
+    if instance.status == 'REJECTED':
+        rejected_mail(instance)
     if instance.status == 'APPROVED':
         subject = '{} with number {} APPROVED.'.format(instance.type, instance.number)
         body = ''
@@ -256,6 +275,8 @@ def my_handler3(sender, instance, **kwargs):
             }
         )
         thread_mail(subject, body, form_email, [to_email], False, html, attachment)
+    if instance.status == 'REJECTED':
+        rejected_mail(instance)
 
 
 @receiver(post_save, sender=CastService)
@@ -288,6 +309,8 @@ def my_handler4(sender, instance, **kwargs):
             }
         )
         thread_mail(subject, body, form_email, [to_email], False, html, attachment)
+    if instance.status == 'REJECTED':
+        rejected_mail(instance)
 
 
 @receiver(post_save, sender=IdentityService)
@@ -319,6 +342,8 @@ def my_handler5(sender, instance, **kwargs):
             }
         )
         thread_mail(subject, body, form_email, [to_email], False, html)
+    if instance.status == 'REJECTED':
+        rejected_mail(instance)
 
 
 @receiver(post_save, sender=NativityService)
@@ -351,3 +376,20 @@ def my_handler6(sender, instance, **kwargs):
             }
         )
         thread_mail(subject, body, form_email, [to_email], False, html, attachment)
+    if instance.status == 'REJECTED':
+        rejected_mail(instance)
+
+
+def rejected_mail(instance):
+    subject = '{} {} is Rejected.'.format(instance.type, instance.number)
+    body = ''
+    form_email = settings.EMAIL_HOST_USER
+    to_email = instance.requested_by.email
+    html = loader.render_to_string(
+        'email/email.html',
+        {
+            'title': subject,
+            'content': "Request is rejected by the village officer, please contact village office."
+        }
+    )
+    thread_mail(subject, body, form_email, [to_email], False, html)

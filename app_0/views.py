@@ -10,7 +10,7 @@ from django.utils import timezone
 
 from app_0.forms import RequestUserForm
 from app_0.models import RationCardService, RequestUser, NativityService, IncomeService, IdentityService, CastService, \
-    TaxService, ComplaintService, NotificationService
+    TaxService, ComplaintService, NotificationService, Village
 
 
 def index_view(request):
@@ -19,7 +19,8 @@ def index_view(request):
 
 
 def req_ration_card_view(request):
-    context = {}
+    villages = Village.objects.all()
+    context = {'villages': villages}
     template_name = 'app_0/ration_card.html'
     if request.method == 'GET':
         return render(request, template_name, context)
@@ -29,6 +30,7 @@ def req_ration_card_view(request):
         phone = request.POST.get('phone', None)
         panchayath = request.POST.get('pmc', None)
         taluk = request.POST.get('taluk', None)
+        village = Village.objects.get(pk=request.POST.get('village', None))
         ward = request.POST.get('ward', None)
         card_holder_name = request.POST.get('c-name', None)
         house_name = request.POST.get('hname', None)
@@ -45,7 +47,8 @@ def req_ration_card_view(request):
                                              taluk=taluk, ward=ward, house_number=house_number, house_name=house_name,
                                              card_holder_name=card_holder_name, pin_code=pin_code,
                                              annual_income=Decimal(annual_income), address=address,
-                                             requested_on=timezone.now().date(), card_holder_photo=card_holder_photo)
+                                             requested_on=timezone.now().date(), card_holder_photo=card_holder_photo,
+                                             village=village)
             messages.add_message(request, messages.SUCCESS,
                                  'Request successfully registered. Please check your mail {}'.format(email))
             return redirect(index_view)
@@ -55,7 +58,8 @@ def req_ration_card_view(request):
 
 
 def req_nativity_view(request):
-    context = {}
+    villages = Village.objects.all()
+    context = {'villages': villages}
     template_name = 'app_0/nativity.html'
     if request.method == 'GET':
         return render(request, template_name, context)
@@ -66,6 +70,8 @@ def req_nativity_view(request):
         dob = request.POST.get('dob', None)
         pob = request.POST.get('pob', None)
         uid = request.POST.get('uid', None)
+        village = Village.objects.get(pk=request.POST.get('village', None))
+
         nationality = request.POST.get('nationality', None)
         father = request.POST.get('father', None)
         mother = request.POST.get('mother', None)
@@ -83,7 +89,8 @@ def req_nativity_view(request):
                                            requested_on=timezone.now().date(), dob=dob, pob=pob, uid=uid,
                                            nationality=nationality, father=father, mother=mother, photo=photo,
                                            document=document, passport_number=passport_number, poi=poi, doi=doi,
-                                           validity=validity)
+                                           validity=validity,
+                                           village=village)
             messages.add_message(request, messages.SUCCESS,
                                  'Request successfully registered. Please check your mail {}'.format(email))
             return redirect(index_view)
@@ -93,7 +100,8 @@ def req_nativity_view(request):
 
 
 def req_income_view(request):
-    context = {}
+    villages = Village.objects.all()
+    context = {'villages': villages}
     template_name = 'app_0/income.html'
     if request.method == 'GET':
         return render(request, template_name, context)
@@ -103,6 +111,7 @@ def req_income_view(request):
         phone = request.POST.get('phone', None)
         dob = request.POST.get('dob', None)
         pob = request.POST.get('pob', None)
+        village = Village.objects.get(pk=request.POST.get('village', None))
         uid = request.POST.get('uid', None)
         father = request.POST.get('father', None)
         mother = request.POST.get('mother', None)
@@ -116,7 +125,8 @@ def req_income_view(request):
             IncomeService.objects.create(number=number, requested_by=user, address=address,
                                          requested_on=timezone.now().date(), dob=dob, pob=pob, uid=uid, father=father,
                                          mother=mother, photo=photo,
-                                         document=document, annual_income=annual_income)
+                                         document=document, annual_income=annual_income,
+                                         village=village)
             messages.add_message(request, messages.SUCCESS,
                                  'Request successfully registered. Please check your mail {}'.format(email))
             return redirect(index_view)
@@ -126,7 +136,8 @@ def req_income_view(request):
 
 
 def req_identity_card_view(request):
-    context = {}
+    villages = Village.objects.all()
+    context = {'villages': villages}
     template_name = 'app_0/identity.html'
     if request.method == 'GET':
         return render(request, template_name, context)
@@ -137,6 +148,7 @@ def req_identity_card_view(request):
         dob = request.POST.get('dob', None)
         pob = request.POST.get('pob', None)
         uid = request.POST.get('uid', None)
+        village = Village.objects.get(pk=request.POST.get('village', None))
         father = request.POST.get('father', None)
         mother = request.POST.get('mother', None)
         address = request.POST.get('address', None)
@@ -154,7 +166,8 @@ def req_identity_card_view(request):
                                            requested_on=timezone.now().date(), dob=dob, pob=pob, uid=uid, father=father,
                                            mother=mother, photo=photo, designation=designation,
                                            document=document, g_name=g_name, g_relation=g_relation, g_uid=g_uid,
-                                           g_photo=g_photo)
+                                           g_photo=g_photo,
+                                           village=village)
             messages.add_message(request, messages.SUCCESS,
                                  'Request successfully registered. Please check your mail {}'.format(email))
             return redirect(index_view)
@@ -164,7 +177,8 @@ def req_identity_card_view(request):
 
 
 def req_cast_view(request):
-    context = {}
+    villages = Village.objects.all()
+    context = {'villages': villages}
     template_name = 'app_0/cast.html'
     if request.method == 'GET':
         return render(request, template_name, context)
@@ -175,6 +189,7 @@ def req_cast_view(request):
         dob = request.POST.get('dob', None)
         pob = request.POST.get('pob', None)
         uid = request.POST.get('uid', None)
+        village = Village.objects.get(pk=request.POST.get('village', None))
         father = request.POST.get('father', None)
         mother = request.POST.get('mother', None)
         address = request.POST.get('address', None)
@@ -187,7 +202,8 @@ def req_cast_view(request):
             CastService.objects.create(number=number, requested_by=user, address=address,
                                        requested_on=timezone.now().date(), dob=dob, pob=pob, uid=uid, father=father,
                                        mother=mother, photo=photo,
-                                       document=document, cast=cast)
+                                       document=document, cast=cast,
+                                       village=village)
             messages.add_message(request, messages.SUCCESS,
                                  'Request successfully registered. Please check your mail {}'.format(email))
             return redirect(index_view)
@@ -197,7 +213,8 @@ def req_cast_view(request):
 
 
 def req_tax_view(request):
-    context = {}
+    villages = Village.objects.all()
+    context = {'villages': villages}
     template_name = 'app_0/paytax.html'
     if request.method == 'GET':
         return render(request, template_name, context)
@@ -205,13 +222,15 @@ def req_tax_view(request):
         name = request.POST.get('name', None)
         email = request.POST.get('email', None)
         phone = request.POST.get('phone', None)
+        village = Village.objects.get(pk=request.POST.get('village', None))
         tax_number = request.POST.get('tax_number', None)
         tax_amount = request.POST.get('tax_amount', None)
         try:
             number = timezone.now().strftime("%Y%m%d") + 'TA' + str(random.randint(1, 100))
             user, created = RequestUser.objects.get_or_create(name=name, email=email, phone=phone)
             TaxService.objects.create(number=number, requested_on=timezone.now().date(), requested_by=user,
-                                      tax_amount=tax_amount, tax_number=tax_number)
+                                      tax_amount=tax_amount, tax_number=tax_number,
+                                      village=village)
             messages.add_message(request, messages.SUCCESS,
                                  'Request successfully payed your tax. Please check your mail {}'.format(email))
             return redirect(index_view)
@@ -221,7 +240,8 @@ def req_tax_view(request):
 
 
 def req_complaint_view(request):
-    context = {}
+    villages = Village.objects.all()
+    context = {'villages': villages}
     template_name = 'app_0/complaint.html'
     if request.method == 'GET':
         return render(request, template_name, context)
@@ -230,13 +250,15 @@ def req_complaint_view(request):
         email = request.POST.get('email', None)
         phone = request.POST.get('phone', None)
         title = request.POST.get('title', None)
+        village = Village.objects.get(pk=request.POST.get('village', None))
         service = request.POST.get('service', None)
         message = request.POST.get('message', None)
         try:
             number = timezone.now().strftime("%Y%m%d") + 'CO' + str(random.randint(1, 100))
             user, created = RequestUser.objects.get_or_create(name=name, email=email, phone=phone)
             ComplaintService.objects.create(number=number, requested_on=timezone.now().date(), requested_by=user,
-                                            title=title, service=service, message=message)
+                                            title=title, service=service, message=message,
+                                            village=village)
             messages.add_message(request, messages.SUCCESS,
                                  'Complaint successfully registered. Please check your mail {}'.format(email))
             return redirect(index_view)
@@ -287,11 +309,12 @@ def dashboard(request):
     context = {}
     template_name = 'admin/dashboard.html'
     value_field = ('id', 'type', 'requested_by__name', 'requested_on')
-    rc = RationCardService.objects.filter(status='PENDING').values(*value_field)
-    na = NativityService.objects.filter(status='PENDING').values(*value_field)
-    inc = IncomeService.objects.filter(status='PENDING').values(*value_field)
-    ca = CastService.objects.filter(status='PENDING').values(*value_field)
-    idc = IdentityService.objects.filter(status='PENDING').values(*value_field)
+    filters = {'status': 'PENDING', 'village': request.user.village}
+    rc = RationCardService.objects.filter(**filters).values(*value_field)
+    na = NativityService.objects.filter(**filters).values(*value_field)
+    inc = IncomeService.objects.filter(**filters).values(*value_field)
+    ca = CastService.objects.filter(**filters).values(*value_field)
+    idc = IdentityService.objects.filter(**filters).values(*value_field)
 
     if request.method == 'GET':
         list_data = list(rc) + list(na) + list(inc) + list(ca) + list(idc)
@@ -316,22 +339,28 @@ def dashboard(request):
 
 
 def detail_approval(request, status, pk):
+    villages = Village.objects.all()
     context = {}
     if request.method == 'GET':
         if status == 'Ration card':
             context['item'] = RationCardService.objects.get(pk=pk)
+            context['villages'] = villages.filter(pk=context['item'].village.id)
             return render(request, 'app_0/ration_card.html', context)
         if status == 'Nativity':
             context['item'] = NativityService.objects.get(pk=pk)
+            context['villages'] = villages.filter(pk=context['item'].village.id)
             return render(request, 'app_0/nativity.html', context)
         if status == 'Income':
             context['item'] = IncomeService.objects.get(pk=pk)
+            context['villages'] = villages.filter(pk=context['item'].village.id)
             return render(request, 'app_0/income.html', context)
         if status == 'Caste':
             context['item'] = CastService.objects.get(pk=pk)
+            context['villages'] = villages.filter(pk=context['item'].village.id)
             return render(request, 'app_0/cast.html', context)
         if status == 'Identity card':
             context['item'] = IdentityService.objects.get(pk=pk)
+            context['villages'] = villages.filter(pk=context['item'].village.id)
             return render(request, 'app_0/identity.html', context)
         return redirect(start)
     if request.method == 'POST':
@@ -361,6 +390,5 @@ def detail_approval(request, status, pk):
                                  'Successfully {} application {}'.format(type.lower(), item.number))
             return redirect(start)
         except Exception as err:
-            # messages.add_message(request, messages.ERROR, err)
-            raise err
+            messages.add_message(request, messages.ERROR, err)
         return redirect(start)

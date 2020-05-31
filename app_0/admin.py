@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.utils.translation import gettext, gettext_lazy as _
 
-from app_0.models import NotificationService, VillageOfficer
+from app_0.models import NotificationService, VillageOfficer, Village
 
 
 class VillageOfficerCreateForm(UserCreationForm):
@@ -20,7 +20,7 @@ class VillageOfficerAdmin(UserAdmin):
     list_filter = ('is_staff', 'is_superuser')
     fieldsets = (
         (None, {'fields': ('username',)}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'village')}),
         (_('Permissions'), {
             'fields': ('is_staff', 'is_superuser'),
         }),
@@ -28,7 +28,7 @@ class VillageOfficerAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('first_name', 'email', 'username', 'password1', 'password2',),
+            'fields': ('first_name', 'email', 'username', 'password1', 'password2', 'village'),
         }),
     )
 
@@ -36,3 +36,4 @@ class VillageOfficerAdmin(UserAdmin):
 admin.site.unregister(Group)
 admin.site.register(VillageOfficer, VillageOfficerAdmin)
 admin.site.register(NotificationService)
+admin.site.register(Village)

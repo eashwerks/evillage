@@ -74,6 +74,15 @@
                             <input type="text" name="hname" data-form-field="hname" class="form-control display-7"
                                    id="hname" value="{{item.house_name}}">
                         </div>
+                        <div class="col-md-4 form-group" data-for="village">
+                            <label for="village">Village</label>
+                            <select type="text" name="village" data-form-field="village" class="form-control display-7"
+                                    id="village">
+                                {% for village in villages %}
+                                <option value="{{village.id}}">{{village}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         <div class="col-md-4 form-group" data-for="pic">
                             {% if item %}
                             <label for="pic"></label>
