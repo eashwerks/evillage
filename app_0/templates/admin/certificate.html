@@ -1,10 +1,29 @@
+{% load static %}
+<head>
+    <style type="text/css">
+<!--
+	p {margin: 0; padding: 0;}	.ft10{font-size:16px;font-family:Helvetica;color:#000000;}
+	.ft11{font-size:16px;font-family:Helvetica;color:#990000;}
+	.ft12{font-size:14px;font-family:Helvetica;color:#000000;}
+	.ft13{font-size:16px;font-family:Helvetica;color:#660000;}
+	.ft14{font-size:14px;line-height:17px;font-family:Helvetica;color:#000000;}
+	table, th, td {border: 1px solid black;border-collapse: collapse;padding:10px}
+	th, td {;padding-bottom:20px;}
+-->
+
+
+    </style>
+</head>
+
 <section class="mbr-section form1 cid-rZEti34JiZ" id="form1-9">
     <div class="container">
+        <img id='barcode' src="{% static 'app_0/images/qrcode.png' %}" alt="qrcode" title="Certificacte"
+             style="float: left;width:100px; height:100px"/>
         <div class="row justify-content-center">
             <div class="title col-12 col-lg-8">
-                <h2 class="center mbr-section-title align-center pb-3 mbr-fonts-style display-2">
+                <h2 class="center mbr-section-title align-center pb-3 mbr-fonts-style display-2 ft11">
                     <center>
-                        {{ type }} Certificate
+                        <u>{{ type }} CERTIFICATE</u>
                     </center>
                 </h2>
                 <!-- <h3 class="mbr-section-subtitle align-center mbr-light pb-3 mbr-fonts-style display-5">
@@ -18,17 +37,50 @@
             <div class="media-container-column col-lg-8">
                 <div class="row">
                     <div class="col-md-12">
-                        <b>{{ content }}</b>
-                        <br>
-                        <br>
-                        <span style="float: right;">Signature: (Digitally signed)</span>
-                        <br>
-                        <span>Date  :  {% now "jS F Y H:i" %}</span>
-                        <br>
-                        <span style="float: right;">Designation: Village Officer</span>
+                        <p class="ft12" style="float: left;">Certificacte no. {{ item.number }}</p>
+                        <p class="ft12" style="float: right;">Issueed On {% now "d-m-Y H:i" %}</p>
+                        <p class="ft12" style="float: left;padding-bottom:20px;padding-left:20px;padding-top:20px;">{{ content }}</p>
+                            <table style="border:1px solid black">
+                                <tr>
+                                    <th class="ft14">Name of the person to whom certificate is issued</th>
+                                    <td class="ft12">{{ item.requested_by.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ft14">Email
+                                    </th>
+                                    <td class="ft12">{{ item.requested_by.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ft14">Phone :</th>
+                                    <td class="ft12">{{ item.requested_by.phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ft14">Address</th>
+                                    <td class="ft12">{{ item.address }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ft14">Village</th>
+                                    <td class="ft12">{{ item.village.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ft14">Issue Date</th>
+                                    <td class="ft12">{% now "d-m-Y H:i" %}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ft14">Name of office</th>
+                                    <td class="ft12">{{ item.village.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ft14">Purpose of which the ceritificate</th>
+                                    <td class="ft12">Education purpose</td>
+                                </tr>
+                            </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<style>
+
+</style>

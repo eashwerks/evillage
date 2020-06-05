@@ -1,14 +1,17 @@
 from io import BytesIO
+from random import randint
+
 from django.http import HttpResponse
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from django.utils import timezone
+from weasyprint import HTML
 
 from xhtml2pdf import pisa
 
 
 def render_to_pdf(instance, template_src):
     template = get_template(template_src)
-    context_dict = {'type': instance.type, 'content': get_content(instance.type)}
+    context_dict = {'type': instance.type.upper(), 'content': get_content(instance.type)}
     if instance.type == 'Income':
         context_dict['content'] = context_dict['content'].format(timezone.now().year,
                                                                  instance.requested_by.name.upper(),
@@ -21,12 +24,17 @@ def render_to_pdf(instance, template_src):
         context_dict['content'] = context_dict['content'].format(instance.requested_by.name.upper(),
                                                                  instance.father.upper(),
                                                                  instance.address)
-    html = template.render(context_dict)
-    result = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
-    if not pdf.err:
-        return result.getvalue()
-    return None
+    context_dict['item'] = instance
+    # html = template.render(context_dict)
+    # result = BytesIO()
+    # pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    html_string = render_to_string(template_src, context_dict)
+    html = HTML(string=html_string,
+                base_url='http://127.0.0.1:8000/secure/e-village/dashboard/{}/{}/'.format(instance.type, instance, id))
+    main_doc = html.render()
+    # pdf = main_doc.write_pdf(target='generated_certificates/{}.pdf'.format(instance.number))
+    pdf = main_doc.write_pdf()
+    return pdf
 
 
 def get_content(key):
